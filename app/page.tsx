@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import TerritoryPicker from '../components/TerritoryPicker';
 import PostCard from '../components/PostCard';
 import PostDetail from '../components/PostDetail';
@@ -12,18 +12,17 @@ import { getStrings } from '../lib/i18n';
 export const dynamic = 'force-dynamic';
 
 export default function Page() {
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const [territory, setTerritory] = useState<string | null>(searchParams.get('t') || null);
+  const [territory, setTerritory] = useState<string | null>(null);
   const [items, setItems] = useState<RSSItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<RSSItem | null>(null);
   const strings = getStrings('es');
 
   useEffect(() => {
-    const t = searchParams.get('t');
-    setTerritory(t || null);
-  }, [searchParams]);
+    const params = new URLSearchParams(window.location.search);
+    setTerritory(params.get('t') || null);
+  }, []);
 
   useEffect(() => {
     loadFeed();
@@ -37,7 +36,7 @@ export default function Page() {
 
   const handleTerritoryChange = (newTerritory: string | null) => {
     setTerritory(newTerritory);
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(window.location.search);
     if (newTerritory) {
       params.set('t', newTerritory);
     } else {
