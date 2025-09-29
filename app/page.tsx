@@ -13,7 +13,7 @@ export default function Page() {
   const [items, setItems] = useState<RSSItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<RSSItem | null>(null);
-  const strings = getStrings('en');
+  const strings = getStrings('es');
 
   useEffect(() => {
     loadFeed();
@@ -51,7 +51,7 @@ export default function Page() {
       ) : items.length === 0 ? (
         <p>{strings.noPosts}</p>
       ) : (
-        <div>
+        <div role="list">
           {items.map((item) => (
             <PostCard key={item.id} item={item} onClick={setSelectedItem} />
           ))}

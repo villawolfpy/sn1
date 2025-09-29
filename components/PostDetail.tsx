@@ -1,7 +1,7 @@
 'use client';
 
 import { RSSItem } from '../lib/rss';
-import { formatRelativeTime } from '../lib/format';
+import { timeAgo, stripHtml } from '../lib/format';
 import { getStrings } from '../lib/i18n';
 
 interface PostDetailProps {
@@ -10,7 +10,7 @@ interface PostDetailProps {
 }
 
 export default function PostDetail({ item, onBack }: PostDetailProps) {
-  const strings = getStrings('en');
+  const strings = getStrings('es');
 
   return (
     <div style={{ padding: 16 }}>
@@ -30,10 +30,10 @@ export default function PostDetail({ item, onBack }: PostDetailProps) {
       </button>
       <h2 style={{ marginTop: 0 }}>{item.title}</h2>
       <p style={{ color: '#666' }}>
-        by {item.creator} • {formatRelativeTime(item.pubDate)}
+        {timeAgo(item.pubDate)}
       </p>
       {item.contentSnippet && (
-        <p style={{ lineHeight: 1.6 }}>{item.contentSnippet}</p>
+        <p style={{ lineHeight: 1.6 }}>{stripHtml(item.contentSnippet)}</p>
       )}
       <div style={{ marginTop: 16 }}>
         <a
