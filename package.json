@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@farcaster/miniapp-sdk": "^0.1.10",
     "@vercel/og": "^0.6.2",
     "fast-xml-parser": "^4.4.1",
     "next": "^14.2.5",

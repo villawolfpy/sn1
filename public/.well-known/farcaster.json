@@ -1,0 +1,8 @@
+{
+  "name": "SN Reader",
+  "icon": "https://sn1-psi.vercel.app/icon.png",
+  "splash": "https://sn1-psi.vercel.app/splash.png",
+  "home_url": "https://sn1-psi.vercel.app/",
+  "webhook_url": null,
+  "scopes": []
+}
