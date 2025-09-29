@@ -7,6 +7,7 @@ export interface RSSItem {
   contentSnippet: string;
   territory: string | null;
   commentsLink: string;
+  isExternal: boolean;
 }
 
 export interface RSSResponse {

@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { getStrings } from '../lib/i18n';
 
 interface TerritoryPickerProps {
@@ -8,67 +7,30 @@ interface TerritoryPickerProps {
   currentTerritory: string | null;
 }
 
-const commonTerritories = ['bitcoin', 'tech', 'nostr', 'meta', 'jobs'];
+const territories = [
+  'art', 'Contruction_and_Engineering', 'dotnet', 'ideasfromtheedge', 'mempool', 'openagents', 'bitdevs', 'DIY', 'Animal_World', 'aliens_and_UFOs', 'bitcoin_Mining', 'lol', 'science', 'lightning', 'food_and_drinks', 'bitcoin', 'nostr', 'tech', 'Design', 'devs', 'Memes', 'news', 'BooksAndArticles', 'HealthAndFitness', 'Photography', 'Stacker_Sports', 'Politics_And_law', 'bitcoin_beginners', 'spirituality', 'econ', 'alter_nat', 'AskSN', 'Cartalk', 'crypto', 'Education', 'events', 'gaming', 'movies', 'music', 'oracle', 'podcasts', 'security', 'Video', 'charts_and_numbers', 'AGORA', 'meta', 'culture', 'tutorials', 'FiresidePhilosophy', 'mostly_harmless', 'privacy', 'AMA', 'builders', 'jobs'
+];
 
 export default function TerritoryPicker({ onSelect, currentTerritory }: TerritoryPickerProps) {
-  const [input, setInput] = useState(currentTerritory || '');
-  const strings = getStrings('en'); // or detect language
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSelect(input.trim() || null);
-  };
+  const strings = getStrings('es');
 
   return (
     <div style={{ marginBottom: 16 }}>
-      <button
-        onClick={() => onSelect(null)}
+      <select
+        value={currentTerritory || ''}
+        onChange={(e) => onSelect(e.target.value || null)}
         style={{
-          marginRight: 8,
-          padding: '8px 16px',
-          backgroundColor: currentTerritory ? '#f0f0f0' : '#007bff',
-          color: currentTerritory ? '#000' : '#fff',
-          border: 'none',
+          padding: '8px',
+          border: '1px solid #ccc',
           borderRadius: 4,
-          cursor: 'pointer',
+          width: 250,
         }}
       >
-        {strings.homepage}
-      </button>
-      <form onSubmit={handleSubmit} style={{ display: 'inline' }}>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={strings.enterTerritory}
-          list="territories"
-          style={{
-            padding: '8px',
-            border: '1px solid #ccc',
-            borderRadius: 4,
-            width: 200,
-          }}
-        />
-        <datalist id="territories">
-          {commonTerritories.map((t) => (
-            <option key={t} value={t} />
-          ))}
-        </datalist>
-        <button
-          type="submit"
-          style={{
-            marginLeft: 8,
-            padding: '8px 16px',
-            backgroundColor: '#28a745',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 4,
-            cursor: 'pointer',
-          }}
-        >
-          Go
-        </button>
-      </form>
+        <option value="">{strings.homepage}</option>
+        {territories.map((t) => (
+          <option key={t} value={t}>{t}</option>
+        ))}
+      </select>
     </div>
   );
 }

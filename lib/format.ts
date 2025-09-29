@@ -1,16 +1,27 @@
-export function timeAgo(dateString: string): string {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  const diffDays = Math.floor(diffHours / 24);
+export const stripTags = (html: string) =>
+  html.replace(/<script[^>]*>.*?<\/script>/gis, "")
+      .replace(/<style[^>]*>.*?<\/style>/gis, "")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
 
-  if (diffHours < 1) return 'ahora mismo';
-  if (diffHours < 24) return `hace ${diffHours}h`;
-  if (diffDays < 7) return `hace ${diffDays}d`;
-  return date.toLocaleDateString();
-}
+export const truncate = (s: string, n = 360) =>
+  s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s;
 
-export function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, '');
-}
+export const timeAgo = (d: string | number | Date) => {
+  const ts = new Date(d).getTime();
+  if (isNaN(ts)) return "";
+  let diff = Math.max(0, (Date.now() - ts) / 1000);
+  if (diff < 30) return "ahora mismo";
+  const units: [number, string][] = [
+    [60, "s"], [60, "m"], [24, "h"], [7, "d"], [4.345, "sem"], [12, "mes"], [1000, "a"]
+  ];
+  const labels = ["s","m","h","d","sem","mes","a"];
+  let i = 0;
+  for (; i < units.length && diff >= units[i][0]; i++) diff /= units[i][0];
+  return `hace ${Math.floor(diff)}${labels[i] ?? "a"}`;
+};
+
+export const getDomain = (u: string) => {
+  try { return new URL(u).hostname.replace(/^www\./,""); } catch { return ""; }
+};

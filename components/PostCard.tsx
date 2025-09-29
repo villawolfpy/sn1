@@ -1,7 +1,7 @@
 'use client';
 
 import { RSSItem } from '../lib/rss';
-import { timeAgo, stripHtml } from '../lib/format';
+import { timeAgo, stripTags, truncate } from '../lib/format';
 
 interface PostCardProps {
   item: RSSItem;
@@ -27,13 +27,7 @@ export default function PostCard({ item, onClick }: PostCardProps) {
         {timeAgo(item.pubDate)}
       </p>
       <p style={{ margin: '8px 0', fontSize: 14, color: '#333' }}>
-        {item.contentSnippet ? (
-          stripHtml(item.contentSnippet).length > 100
-            ? `${stripHtml(item.contentSnippet).substring(0, 100)}...`
-            : stripHtml(item.contentSnippet)
-        ) : (
-          'No preview available'
-        )}
+        {item.contentSnippet ? truncate(stripTags(item.contentSnippet), 100) : 'No preview available'}
       </p>
     </div>
   );

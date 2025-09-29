@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { XMLParser } from 'fast-xml-parser';
+import { stripTags } from '../../../lib/format';
 
 const HOME_RSS = 'https://stacker.news/rss';
 const TERRITORY_RSS = (t: string) => `https://stacker.news/~${encodeURIComponent(t)}/rss`;
@@ -23,16 +24,20 @@ function parseRSS(xml: string, territory?: string) {
   const items = data?.rss?.channel?.item || [];
   const normalized = (Array.isArray(items) ? items : [items])
     .filter(Boolean)
-    .map((item: any, index: number) => ({
-      id: item.guid || item.link || `item-${index}`,
-      title: item.title || '',
-      link: item.link || '',
-      creator: item['dc:creator'] || item.creator || '',
-      pubDate: item.pubDate || '',
-      contentSnippet: item.description || item['content:encoded'] || '',
-      territory: territory || null,
-      commentsLink: item.comments || '',
-    }));
+    .map((item: any, index: number) => {
+      const link = item.link || '';
+      return {
+        id: item.guid || item.link || `item-${index}`,
+        title: item.title || '',
+        link,
+        creator: item['dc:creator'] || item.creator || '',
+        pubDate: item.pubDate || '',
+        contentSnippet: stripTags(item.description || item['content:encoded'] || ''),
+        territory: territory || null,
+        commentsLink: item.comments || '',
+        isExternal: !link.includes('stacker.news'),
+      };
+    });
   return normalized;
 }
 
