@@ -9,6 +9,8 @@ import { fetchRSS, RSSItem } from '../lib/rss';
 import { ready } from '../lib/miniapp';
 import { getStrings } from '../lib/i18n';
 
+export const dynamic = 'force-dynamic';
+
 export default function Page() {
   const searchParams = useSearchParams();
   const router = useRouter();
